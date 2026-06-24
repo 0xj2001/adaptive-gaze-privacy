@@ -1,6 +1,6 @@
-# Final Artifact Manifest
+# Artifact Provenance Manifest
 
-This manifest records the result provenance for the manuscript and the public code package. It uses venue-neutral names so that the repository can be shared before a final submission venue is chosen. The public repository intentionally excludes the manuscript source, compiled manuscript PDF, publisher templates, and paper figures.
+This manifest records result provenance for the manuscript companion artifact. It uses venue-neutral names so that the repository can be shared before a final submission venue is chosen. Manuscript sources, compiled manuscript files, publisher templates, production figures, trained checkpoints, and raw GazeBase recordings are managed outside this public computational artifact.
 
 ## Final Source of Truth
 
@@ -15,9 +15,9 @@ This manifest records the result provenance for the manuscript and the public co
 - Final learned-release evaluation mode: `ae_eval_noise_mode=sample`
 - Final stochastic release repeats: `release_repeats=5`
 
-The public package does not include manuscript files or model checkpoints. Training metadata for the final ANIAE runs is retained under `results/final_training_metadata/` for provenance.
+Training metadata for the final ANIAE runs is retained under `results/final_training_metadata/` to support provenance checks without distributing local checkpoints.
 
-## Main-Paper Result Map
+## Manuscript Result Map
 
 | Reported manuscript item | Public input artifact(s) | Generator / code path | Notes |
 |---|---|---|---|

@@ -1,63 +1,60 @@
 # Adaptive Gaze Privacy
 
-This repository contains the public code package for the accompanying manuscript on adaptive latent-noise release for biometric privacy in eye-tracking streams. The package is intentionally venue-neutral: it contains the code, configurations, compact result artifacts, and provenance notes needed to trace the reported results, but it does not include the manuscript source/PDF, the original GazeBase dataset, or trained model checkpoints.
+Public artifact repository for research on adaptive latent-noise release for
+biometric privacy in eye-tracking streams. The codebase supports empirical
+evaluation of ANIAE, an evaluator-dependent privacy-preserving release
+mechanism designed to reduce biometric identifiability while retaining
+task-relevant gaze dynamics.
 
-ANIAE is an empirical, evaluator-dependent privacy-preserving release mechanism. It is not a formal differential privacy mechanism; formal privacy wording applies only to explicit differential-privacy baselines or cited mechanisms.
+ANIAE should be interpreted as an empirical privacy mechanism rather than a
+formal differential privacy method. Formal differential-privacy terminology in
+this repository applies only to explicit differential-privacy baselines or to
+cited formal mechanisms.
 
-## Repository Layout
+## Repository Scope
 
-```text
-configs/   Final manuscript and baseline configurations
-src/       Data loading, preprocessing, models, losses, and evaluation metrics
-scripts/   Training, evaluation, diagnostics, and table/figure summary scripts
-results/   Compact final result summaries and seed-level JSON artifacts
-docs/      Artifact manifest and reproducibility notes
-```
+This repository is structured as a manuscript companion artifact. It provides
+the implementation, final experiment configurations, compact result artifacts,
+and provenance notes required to inspect the reported computational results.
+Raw third-party data, trained checkpoints, manuscript source files, publisher
+templates, and compiled manuscript files are managed outside the public code
+release.
 
-## What Is Included
+Researchers who wish to rerun the full experimental pipeline from raw gaze
+recordings must obtain GazeBase directly from the dataset maintainers and place
+the data under a local `data/` directory consistent with the paths specified in
+the configuration files. Dataset access, storage, and redistribution remain
+subject to the GazeBase license, access terms, and participant-consent
+restrictions.
 
-- Final main-paper ANIAE configuration: `configs/proposed_aniae_stage2.yaml`
-- Historical/alternate configuration retained for provenance: `configs/round_protocol_ekyt_aniae.yaml`
-- Baseline configurations for Fixed-Noise AE, VAE/KL AE, GRL AE, raw biometric/task evaluators, and no-privacy ablations
-- Final result source of truth: `results/final_results_summary/seed_summary.json`
-- Final stochastic seed-level outputs: `results/final_seed_runs/stochastic_seed42.json`, `stochastic_seed43.json`, and `stochastic_seed44.json`
+## Repository Organization
 
-## What Is Not Included
+| Path | Purpose |
+|---|---|
+| `configs/` | Final ANIAE, baseline, ablation, and evaluator configurations. |
+| `src/` | Data loading, preprocessing, model definitions, training losses, and evaluation metrics. |
+| `scripts/` | Entry points for cache construction, training, evaluation, diagnostics, and result summarization. |
+| `results/` | Compact public artifacts for seed-level outputs, summary tables, robustness checks, and diagnostic analyses. |
+| `docs/` | Provenance manifest linking manuscript-level claims to public artifacts and generator scripts. |
 
-- Manuscript source files, manuscript PDF files, publisher templates, and paper figures
-- The original GazeBase recordings or any full dataset copy
-- Trained checkpoint files (`*.pt`, `*.pth`, `*.ckpt`)
-- Local virtual environments, caches, temporary files, logs, and toolchains
-- Additional draft materials or internal notes
+## Primary Provenance Artifacts
 
-To reproduce from raw data, obtain GazeBase from the dataset maintainers and place it under a local `data/` directory according to the paths in the configs. Dataset access and redistribution must follow the dataset license, access terms, and participant-consent restrictions.
-
-## Environment
-
-Install Python dependencies from the repository root:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-The experiments use PyTorch, NumPy, SciPy, pandas, scikit-learn, matplotlib, PyYAML, and tqdm. CUDA is recommended for training, but some inspection and summary scripts run on CPU.
-
-## Reproducing the Main Result Chain
-
-The final manuscript numbers are based on a subject-disjoint Round Protocol with seeds `42`, `43`, and `44`. The final learned-release evaluation mode is stochastic sampling:
+The final reported ANIAE results are anchored to the subject-disjoint Round
+Protocol with seeds `42`, `43`, and `44`. The final learned-release evaluation
+uses stochastic sampling:
 
 ```text
 ae_eval_noise_mode = sample
 release_repeats = 5
 ```
 
-The final main-table source of truth is:
+The main result source of truth is:
 
 ```text
 results/final_results_summary/seed_summary.json
 ```
 
-The corresponding seed-level stochastic release files are:
+The corresponding seed-level stochastic release artifacts are:
 
 ```text
 results/final_seed_runs/stochastic_seed42.json
@@ -65,17 +62,34 @@ results/final_seed_runs/stochastic_seed43.json
 results/final_seed_runs/stochastic_seed44.json
 ```
 
-Robustness and ablation summaries can be regenerated from the compact public JSON artifacts with:
+The final ANIAE configuration is:
 
-```bash
-python scripts/summarize_robustness_checks.py
+```text
+configs/proposed_aniae_stage2.yaml
 ```
 
-This writes refreshed robustness-check summaries under `results/robustness_checks/`. If you keep a private local manuscript directory and want to regenerate the corresponding LaTeX table, pass `--paper_dir path/to/local/paper`.
+Additional baseline and ablation configurations cover Fixed-Noise AE, VAE/KL
+AE, GRL AE, raw biometric and task evaluators, and no-privacy-loss variants.
+The historical `configs/round_protocol_ekyt_aniae.yaml` file is retained as
+configuration provenance rather than as the final main-result configuration.
 
-## Training and Evaluation Entry Points
+## Environment
 
-Common entry points are:
+Install the Python dependencies from the repository root:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+The experiments use PyTorch, NumPy, SciPy, pandas, scikit-learn, matplotlib,
+PyYAML, and tqdm. CUDA is recommended for full training runs; inspection,
+diagnostic, and summary scripts can be executed on CPU where applicable.
+
+## Reproducibility Workflow
+
+Typical end-to-end execution starts by building local data caches, training the
+biometric and task evaluators, training the ANIAE release model, evaluating the
+protection methods, and summarizing the seed-level outputs:
 
 ```bash
 python scripts/build_cache.py --config configs/proposed_aniae_stage2.yaml
@@ -86,18 +100,52 @@ python scripts/evaluate_protection_methods.py --config configs/proposed_aniae_st
 python scripts/summarize_seed_results.py --input_dir results/final_seed_runs --output_dir results/final_results_summary
 ```
 
-Exact command arguments may need to be adjusted for local data paths and hardware. The compact JSON artifacts in `results/` document the final reported values without requiring the raw dataset to be redistributed.
+Command arguments may need adjustment for local dataset paths, compute
+resources, and experiment naming conventions. The compact JSON artifacts under
+`results/` preserve the final reported values without redistributing raw gaze
+recordings or local model checkpoints.
 
-## Manuscript Integration
+Robustness and ablation summaries can be regenerated from the public compact
+artifacts with:
 
-The public repository intentionally excludes manuscript source files, compiled PDFs, publisher templates, and paper figures. The compact artifacts in `results/` and the mapping in `docs/final_artifact_manifest.md` are provided so the reported manuscript values can be traced without redistributing the manuscript files themselves.
+```bash
+python scripts/summarize_robustness_checks.py
+```
 
-## Artifact Manifest
+This command refreshes summary artifacts under `results/robustness_checks/`.
+When a private manuscript directory is available locally, the corresponding
+LaTeX table can also be regenerated with:
 
-See `docs/final_artifact_manifest.md` for a table mapping each main-paper table or figure to its compact input artifact, generator script, config, seed policy, and release mode.
+```bash
+python scripts/summarize_robustness_checks.py --paper_dir path/to/local/paper
+```
+
+## Result Traceability
+
+The artifact map in `docs/final_artifact_manifest.md` links each manuscript
+table, figure, or quantitative statement to its public input artifact, generator
+script, configuration, seed policy, and release mode. This manifest should be
+treated as the first reference point when auditing numerical consistency between
+the code repository and the manuscript.
+
+## Distribution Boundaries
+
+The public release is limited to original code, configurations, compact result
+summaries, and documentation. Raw GazeBase recordings are governed by the
+dataset maintainers and must be obtained through the appropriate data-access
+process. Trained checkpoints are treated as local generated artifacts and are
+excluded from version control through `.gitignore`.
+
+Manuscript sources, compiled PDFs, publisher templates, and production figures
+are maintained separately from this code artifact so that the repository remains
+a clean computational companion to the paper.
 
 ## License
 
-The original code, scripts, configurations, compact result summaries, and project documentation in this repository are released under the Apache License 2.0. See `LICENSE`.
+The original code, scripts, configurations, compact result summaries, and
+project documentation in this repository are released under the Apache License
+2.0. See `LICENSE`.
 
-This license does not grant rights to the original GazeBase recordings, which are not redistributed here and remain governed by the dataset maintainers' access terms. It also does not apply to manuscript files, publisher templates, or paper figures, which are intentionally not included in the public repository.
+The Apache License 2.0 applies only to the materials distributed in this
+repository. It does not grant rights to GazeBase recordings or other third-party
+data assets, which remain governed by their respective access terms.
