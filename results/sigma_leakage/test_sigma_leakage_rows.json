@@ -1,0 +1,41 @@
+[
+  {
+    "seed": 42,
+    "checkpoint": "experiments\\round_protocol_results\\proposed_aniae_seed42\\checkpoint_best.pt",
+    "num_eval_subjects": 105,
+    "rank1_ir": 0.009523809887468815,
+    "rank5_ir": 0.009523809887468815,
+    "eer": 0.4934981684981685,
+    "random_rank1": 0.009523809523809525,
+    "random_rank5": 0.047619047619047616,
+    "mean_rank": 52.628571428571426,
+    "genuine_score_mean": 0.9999983906745911,
+    "impostor_score_mean": 0.9999982118606567
+  },
+  {
+    "seed": 43,
+    "checkpoint": "experiments\\round_protocol_results\\proposed_aniae_seed43\\checkpoint_best.pt",
+    "num_eval_subjects": 105,
+    "rank1_ir": 0.0,
+    "rank5_ir": 0.05714285746216774,
+    "eer": 0.48589743589743595,
+    "random_rank1": 0.009523809523809525,
+    "random_rank5": 0.047619047619047616,
+    "mean_rank": 51.67619047619048,
+    "genuine_score_mean": 0.9998370409011841,
+    "impostor_score_mean": 0.9998305439949036
+  },
+  {
+    "seed": 44,
+    "checkpoint": "experiments\\round_protocol_results\\proposed_aniae_seed44\\checkpoint_best.pt",
+    "num_eval_subjects": 105,
+    "rank1_ir": 0.009523809887468815,
+    "rank5_ir": 0.095238097012043,
+    "eer": 0.4571428571428572,
+    "random_rank1": 0.009523809523809525,
+    "random_rank5": 0.047619047619047616,
+    "mean_rank": 45.695238095238096,
+    "genuine_score_mean": 0.9999213814735413,
+    "impostor_score_mean": 0.9998984932899475
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "run_name": "proposed_aniae_seed42",
+  "mode": "adaptive",
+  "sigma": null,
+  "seed": 42,
+  "best_score": 1.04005138595157,
+  "checkpoint_best": "experiments\\round_protocol_results\\proposed_aniae_seed42\\checkpoint_best.pt",
+  "checkpoint_latest": "experiments\\round_protocol_results\\proposed_aniae_seed42\\checkpoint_latest.pt"
+}

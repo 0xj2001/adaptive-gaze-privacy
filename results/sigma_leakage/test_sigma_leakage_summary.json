@@ -1,0 +1,15 @@
+{
+  "n_seeds": 3,
+  "rank1_ir_mean": 0.006349206591645877,
+  "rank1_ir_std": 0.005498574202240939,
+  "rank5_ir_mean": 0.05396825478722652,
+  "rank5_ir_std": 0.042945236417166154,
+  "eer_mean": 0.4788461538461539,
+  "eer_std": 0.019175964118146885,
+  "random_rank1_mean": 0.009523809523809525,
+  "random_rank1_std": 0.0,
+  "random_rank5_mean": 0.047619047619047616,
+  "random_rank5_std": 0.0,
+  "mean_rank_mean": 50.0,
+  "mean_rank_std": 3.7583225862253378
+}

@@ -1,0 +1,44 @@
+# Data and local artifacts
+data/
+experiments/
+paper/
+tmp/
+tools/
+.venv/
+venv/
+.matplotlib-cache/
+
+# Model weights and large binary checkpoints
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs and temporary outputs
+*.log
+*.tmp
+*.bak
+
+# LaTeX build products
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz

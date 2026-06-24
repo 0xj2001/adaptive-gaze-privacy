@@ -1,0 +1,91 @@
+# Adaptive Noise-Infused Autoencoder for Eye Tracking Privacy
+project:
+  name: "eye_tracking_privacy"
+  seed: 42
+
+data:
+  dataset: "gazebase"
+  data_dir: "./data/gazebase"
+  split_strategy: "recording"  # closed-set identity classification uses shared subjects
+  use_cache: true
+  cache_dir: "./data/cache_gazebase"
+  cache_lru_size: 64
+  sampling_rate: 1000  # Hz
+  window_size: 1000    # samples (1 second at 1000Hz)
+  window_stride: 500   # 50% overlap
+  features: ["x", "y", "pupil", "velocity_x", "velocity_y"]
+  tasks: ["FXS", "HSS"]  # GazeBase tasks to use
+  train_ratio: 0.1
+  val_ratio: 0.05
+  test_ratio: 0.15
+  min_sessions_per_subject: 2  # for identity verification
+  num_workers: 8
+  val_num_workers: 4
+  pin_memory: true
+
+model:
+  encoder:
+    input_dim: 5        # number of features
+    hidden_dims: [128, 64, 32]
+    latent_dim: 16
+    activation: "relu"
+    dropout: 0.1
+
+  decoder:
+    hidden_dims: [32, 64, 128]
+    output_dim: 5
+    activation: "relu"
+
+  noise:
+    mode: "adaptive"    # "adaptive" | "fixed" | "none"
+    fixed_sigma: 0.1    # used when mode="fixed"
+    sigma_min: 0.01     # minimum noise for adaptive
+    sigma_max: 1.0      # maximum noise for adaptive
+    sensitivity_hidden: [16, 16]  # sensitivity estimator MLP
+
+  attacker:
+    hidden_dims: [64, 128, 64]
+    dropout: 0.2
+
+  utility:
+    hidden_dims: [64, 32]
+    dropout: 0.1
+
+training:
+  epochs: 3
+  batch_size: 64
+  lr_autoencoder: 1e-3
+  lr_attacker: 1e-3
+  lr_utility: 1e-3
+  weight_decay: 1e-5
+  scheduler: "cosine"
+
+  # Loss weights
+  lambda_reconstruction: 1.0
+  lambda_privacy: 0.5
+  lambda_utility: 0.3
+
+  # Adversarial training schedule
+  attacker_pretrain_epochs: 0  # pretrain attacker before joint training
+  attacker_steps_per_ae_step: 1  # attacker updates per AE update
+
+  # Early stopping
+  patience: 20
+  monitor: "val_privacy_utility_score"  # composite metric
+
+evaluation:
+  privacy:
+    - "identification_accuracy"
+    - "equal_error_rate"
+    - "reidentification_rate"
+  utility:
+    - "reconstruction_mse"
+    - "fixation_detection_f1"
+    - "saccade_correlation"
+    - "dtw_distance"
+
+logging:
+  use_wandb: false
+  log_interval: 10
+  save_interval: 1
+  output_dir: "./experiments"

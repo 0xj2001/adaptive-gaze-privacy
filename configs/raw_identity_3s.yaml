@@ -1,0 +1,40 @@
+# Raw gaze identity baseline for 3-second windows.
+project:
+  name: "eye_tracking_privacy_raw_identity_3s"
+  seed: 42
+
+data:
+  dataset: "gazebase"
+  data_dir: "./data/gazebase"
+  split_strategy: "recording"
+  use_cache: true
+  cache_dir: "./data/cache_gazebase_3s"
+  cache_lru_size: 32
+  sampling_rate: 1000
+  window_size: 3000
+  window_stride: 1500
+  features: ["x", "y", "pupil", "velocity_x", "velocity_y"]
+  tasks: ["FXS", "HSS", "RAN", "TEX"]
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  num_workers: 8
+  val_num_workers: 4
+  pin_memory: true
+
+baseline_model:
+  input_type: "sequence"
+  hidden_dims: [256, 128]
+  dropout: 0.3
+
+training:
+  epochs: 30
+  batch_size: 256
+  lr: 1e-3
+  weight_decay: 1e-4
+  patience: 5
+  monitor: "val_top1_accuracy"
+
+logging:
+  save_interval: 5
+  output_dir: "./experiments"

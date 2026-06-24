@@ -1,0 +1,56 @@
+[
+  {
+    "method": "no_protection",
+    "n": 3,
+    "task_labels": [
+      "FXS",
+      "HSS",
+      "RAN",
+      "TEX"
+    ],
+    "accuracy_mean": 0.9890620490620491,
+    "accuracy_std": 0.003856676134275017,
+    "macro_f1_mean": 0.9895732545514301,
+    "macro_f1_std": 0.0037458535728906797,
+    "retention_accuracy_mean": 1.0,
+    "retention_accuracy_std": 0.0,
+    "retention_macro_f1_mean": 1.0,
+    "retention_macro_f1_std": 0.0
+  },
+  {
+    "method": "fixed_ae_sigma1",
+    "n": 3,
+    "task_labels": [
+      "FXS",
+      "HSS",
+      "RAN",
+      "TEX"
+    ],
+    "accuracy_mean": 0.9718614718614719,
+    "accuracy_std": 0.005255537249084662,
+    "macro_f1_mean": 0.9720331456305175,
+    "macro_f1_std": 0.005079601167129742,
+    "retention_accuracy_mean": 0.9826430938555405,
+    "retention_accuracy_std": 0.00895211978652108,
+    "retention_macro_f1_mean": 0.9823067070179269,
+    "retention_macro_f1_std": 0.00863709508391103
+  },
+  {
+    "method": "aniae",
+    "n": 3,
+    "task_labels": [
+      "FXS",
+      "HSS",
+      "RAN",
+      "TEX"
+    ],
+    "accuracy_mean": 0.9672727272727273,
+    "accuracy_std": 0.00832640592109235,
+    "macro_f1_mean": 0.967139255638583,
+    "macro_f1_std": 0.007532293875343761,
+    "retention_accuracy_mean": 0.9780090732595973,
+    "retention_accuracy_std": 0.011532519288254743,
+    "retention_macro_f1_mean": 0.9773653427053222,
+    "retention_macro_f1_std": 0.010666347386169077
+  }
+]

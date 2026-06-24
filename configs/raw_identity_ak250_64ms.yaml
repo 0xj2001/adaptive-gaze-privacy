@@ -1,0 +1,44 @@
+# Corrected raw identity baseline: person_id labels + 250Hz 64ms x/y windows.
+project:
+  name: "eye_tracking_privacy_raw_identity_ak250_64ms"
+  seed: 42
+
+data:
+  dataset: "gazebase"
+  data_dir: "./data/gazebase"
+  split_strategy: "recording"
+  identity_field: "person_id"
+  use_cache: true
+  cache_dir: "./data/cache_gazebase_ak250_64ms"
+  cache_lru_size: 128
+  preprocess_mode: "ak250_sin_xy"
+  sampling_rate: 250
+  sampling_rate_in: 1000
+  sampling_rate_out: 250
+  window_size: 16
+  window_stride: 16
+  features: ["x", "y"]
+  tasks: ["FXS", "HSS", "RAN", "TEX"]
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  num_workers: 8
+  val_num_workers: 4
+  pin_memory: true
+
+baseline_model:
+  input_type: "sequence"
+  hidden_dims: [256, 128]
+  dropout: 0.3
+
+training:
+  epochs: 30
+  batch_size: 512
+  lr: 1e-3
+  weight_decay: 1e-4
+  patience: 5
+  monitor: "val_recording_top1"
+
+logging:
+  save_interval: 5
+  output_dir: "./experiments"

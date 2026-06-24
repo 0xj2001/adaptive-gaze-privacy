@@ -1,0 +1,157 @@
+project:
+  name: eye_tracking_privacy_round_protocol_proposed_aniae_stage2
+  seed: 42
+data:
+  dataset: gazebase
+  data_dir: ./data/gazebase
+  split_strategy: round_protocol
+  identity_field: person_id
+  use_cache: true
+  cache_dir: ./data/cache_round_protocol_1248
+  cache_lru_size: 64
+  preprocess_mode: ak250_sin_xy
+  sampling_rate: 250
+  sampling_rate_in: 1000
+  sampling_rate_out: 250
+  window_size: 16
+  window_stride: 1248
+  subwindow_size: 16
+  features:
+  - x
+  - y
+  tasks:
+  - FXS
+  - HSS
+  - RAN
+  - TEX
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  num_workers: 8
+  val_num_workers: 4
+  pin_memory: true
+  round_protocol:
+    expected_subjects:
+      train: 186
+      val: 31
+      test: 105
+    enrollment_task: RAN
+    enrollment_session: 1
+    probe_session: 2
+biometric_model:
+  embedding_dim: 128
+  base_channels: 64
+  growth_rate: 16
+  block_layers:
+  - 4
+  - 4
+  - 4
+  dropout: 0.2
+task_model:
+  hidden_dim: 128
+  dropout: 0.2
+biometric_training:
+  epochs: 50
+  lr: 0.001
+  weight_decay: 0.0001
+  patience: 8
+  pk_p: 32
+  pk_k: 4
+  steps_per_epoch: 300
+  ms_alpha: 2.0
+  ms_beta: 50.0
+  ms_base: 0.5
+  ce_weight: 0.2
+  eval_batch_size: 128
+  monitor: val_rank1_ir
+task_training:
+  epochs: 30
+  batch_size: 256
+  lr: 0.001
+  weight_decay: 0.0001
+  patience: 6
+  monitor: val_accuracy
+model:
+  encoder:
+    input_dim: 2
+    hidden_dims:
+    - 64
+    - 64
+    latent_dim: 24
+    dropout: 0.1
+  decoder:
+    hidden_dims:
+    - 32
+    - 64
+    output_dim: 2
+  noise:
+    mode: adaptive
+    fixed_sigma: 0.1
+    sigma_min: 0.01
+    sigma_max: 0.5
+    sensitivity_hidden:
+    - 32
+    - 32
+  attacker:
+    hidden_dims:
+    - 256
+    - 128
+    dropout: 0.3
+  utility:
+    hidden_dims:
+    - 64
+    - 32
+    dropout: 0.1
+aniae_training:
+  epochs: 50
+  batch_size: 128
+  lr_autoencoder: 0.0001
+  weight_decay: 1.0e-05
+  patience: 12
+  decoder_recovery_epochs: 8
+  lambda_reconstruction: 1.6
+  lambda_privacy: 0.12
+  lambda_utility: 0.8
+  lambda_task_distill: 0.5
+  task_distill_temperature: 2.0
+  lambda_noise: 0.2
+  target_sigma: 0.05
+  sigma_upper: 0.16
+  privacy_temperature: 0.07
+  min_task_retention: 0.94
+  max_reconstruction_mse: 0.022
+  task_shortfall_penalty: 2.0
+  mse_excess_penalty: 12.0
+  max_val_rank1: 0.0645
+  max_val_rank5: 0.3
+  rank1_excess_penalty: 4.0
+  rank5_excess_penalty: 1.0
+  monitor: val_utility_constrained_score
+baselines:
+  gaussian_sigmas:
+  - 0.05
+  - 0.1
+  - 0.2
+  - 0.5
+  - 1.0
+  dp_epsilons:
+  - 1
+  - 5
+  - 10
+  - 20
+  dp_sensitivity: 2.0
+  fixed_ae_sigmas:
+  - 0.05
+  - 0.1
+  - 0.5
+  - 1.0
+  excluded_fixed_ae_sigmas:
+  - 0.2
+paths:
+  biometric_evaluator: ./experiments/biometric_tune_a/checkpoint_best.pt
+  task_evaluator: ./experiments/task_evaluator_round_protocol/checkpoint_best.pt
+  results_dir: ./experiments/round_protocol_results
+logging:
+  output_dir: ./experiments
+  save_interval: 5
+init_checkpoint: experiments\round_protocol_results\proposed_aniae_stage1_seed42\checkpoint_best.pt

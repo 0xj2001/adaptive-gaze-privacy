@@ -1,0 +1,77 @@
+[
+  {
+    "experiment": "alternative_attacker",
+    "variant": "No Protection",
+    "rank1_ir_mean": 0.841269850730896,
+    "rank1_ir_std": 0.1205931351182637,
+    "rank5_ir_mean": 0.9523809552192688,
+    "rank5_ir_std": 0.016495720993624802,
+    "eer_mean": 0.05131257631257631,
+    "eer_std": 0.013877806564882873
+  },
+  {
+    "experiment": "alternative_attacker",
+    "variant": "Fixed-Noise AE",
+    "rank1_ir_mean": 0.015873016168673832,
+    "rank1_ir_std": 0.01099714786678254,
+    "rank5_ir_mean": 0.06349206467469533,
+    "rank5_ir_std": 0.029095718996204823,
+    "eer_mean": 0.47336691086691085,
+    "eer_std": 0.02720452047198517
+  },
+  {
+    "experiment": "alternative_attacker",
+    "variant": "Proposed ANIAE",
+    "rank1_ir_mean": 0.01904761977493763,
+    "rank1_ir_std": 0.0,
+    "rank5_ir_mean": 0.0793650820851326,
+    "rank5_ir_std": 0.0054985736645416,
+    "eer_mean": 0.4376221001221001,
+    "eer_std": 0.024804907263470254
+  },
+  {
+    "experiment": "core_ablation",
+    "variant": "Full Proposed ANIAE",
+    "source": "final_results",
+    "rank1_ir_mean": 0.008888889228304227,
+    "rank1_ir_std": 0.0029095719809129803,
+    "rank5_ir_mean": 0.07238095452388127,
+    "rank5_ir_std": 0.01649572185394375,
+    "eer_mean": 0.4632936507936508,
+    "eer_std": 0.01327825038874138,
+    "task_retention_mean": 0.9153945136573667,
+    "task_retention_std": 0.02030107430323075,
+    "reconstruction_mse_mean": 0.02379123571872023,
+    "reconstruction_mse_std": 0.004271387354055019
+  },
+  {
+    "experiment": "core_ablation",
+    "variant": "Fixed-Noise AE",
+    "source": "final_results",
+    "rank1_ir_mean": 0.012063492462038994,
+    "rank1_ir_std": 0.00396507821579845,
+    "rank5_ir_mean": 0.06920635104179382,
+    "rank5_ir_std": 0.00900155374673673,
+    "eer_mean": 0.47113247863247865,
+    "eer_std": 0.004068514811984869,
+    "task_retention_mean": 0.889705796338539,
+    "task_retention_std": 0.008284800013363462,
+    "reconstruction_mse_mean": 0.03591821635027469,
+    "reconstruction_mse_std": 0.0023956557063953632
+  },
+  {
+    "experiment": "core_ablation",
+    "variant": "ANIAE without privacy loss",
+    "source": "ablation",
+    "rank1_ir_mean": 0.047619049126903214,
+    "rank1_ir_std": 0.025197632848107377,
+    "rank5_ir_mean": 0.16825397312641144,
+    "rank5_ir_std": 0.027492868322708003,
+    "eer_mean": 0.37008547008547005,
+    "eer_std": 0.018001514012627205,
+    "task_retention_mean": 0.9902906942738492,
+    "task_retention_std": 0.004481631339881928,
+    "reconstruction_mse_mean": 0.0017041674928274678,
+    "reconstruction_mse_std": 0.00021194116432346388
+  }
+]

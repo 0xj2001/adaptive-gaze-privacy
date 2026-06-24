@@ -1,0 +1,92 @@
+# Adaptive Noise-Infused Autoencoder for Eye Tracking Privacy
+# Full-scale experiment config: original data scale/hyperparameters with
+# Windows-safe cache loading and closed-set recording split.
+project:
+  name: "eye_tracking_privacy"
+  seed: 42
+
+data:
+  dataset: "gazebase"
+  data_dir: "./data/gazebase"
+  split_strategy: "recording"
+  use_cache: true
+  cache_dir: "./data/cache_gazebase"
+  cache_lru_size: 64
+  sampling_rate: 1000
+  window_size: 1000
+  window_stride: 500
+  features: ["x", "y", "pupil", "velocity_x", "velocity_y"]
+  tasks: ["FXS", "HSS", "RAN", "TEX"]
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  min_sessions_per_subject: 2
+  num_workers: 8
+  val_num_workers: 4
+  pin_memory: true
+
+model:
+  encoder:
+    input_dim: 5
+    hidden_dims: [128, 64, 32]
+    latent_dim: 16
+    activation: "relu"
+    dropout: 0.1
+
+  decoder:
+    hidden_dims: [32, 64, 128]
+    output_dim: 5
+    activation: "relu"
+
+  noise:
+    mode: "adaptive"
+    fixed_sigma: 0.1
+    sigma_min: 0.01
+    sigma_max: 1.0
+    sensitivity_hidden: [16, 16]
+
+  attacker:
+    hidden_dims: [64, 128, 64]
+    dropout: 0.2
+
+  utility:
+    hidden_dims: [64, 32]
+    dropout: 0.1
+
+training:
+  epochs: 200
+  batch_size: 256
+  lr_autoencoder: 1e-3
+  lr_attacker: 1e-3
+  lr_utility: 1e-3
+  weight_decay: 1e-5
+  scheduler: "cosine"
+
+  lambda_reconstruction: 1.0
+  lambda_privacy: 0.5
+  lambda_utility: 0.3
+
+  # Practical full-data setting: keeps an informed attacker while avoiding
+  # spending most wall time on adversary-only updates.
+  attacker_pretrain_epochs: 3
+  attacker_steps_per_ae_step: 1
+
+  patience: 20
+  monitor: "val_privacy_utility_score"
+
+evaluation:
+  privacy:
+    - "identification_accuracy"
+    - "equal_error_rate"
+    - "reidentification_rate"
+  utility:
+    - "reconstruction_mse"
+    - "fixation_detection_f1"
+    - "saccade_correlation"
+    - "dtw_distance"
+
+logging:
+  use_wandb: false
+  log_interval: 10
+  save_interval: 5
+  output_dir: "./experiments"

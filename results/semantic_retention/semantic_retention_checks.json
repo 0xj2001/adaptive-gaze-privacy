@@ -1,0 +1,5 @@
+{
+  "no_protection_sri_min": 1.0,
+  "no_protection_sri_close_to_one": true,
+  "event_values_finite": true
+}
